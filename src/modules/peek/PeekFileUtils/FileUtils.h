@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 
 #include "common.h"
 
@@ -6,5 +7,5 @@
 
 namespace FileUtils
 {
-    HRESULT GetSelectedFile(String& filepath);
+    HRESULT GetSelectedFile(std::vector<String>& selectedFiles);
 };

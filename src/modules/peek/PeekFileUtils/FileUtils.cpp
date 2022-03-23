@@ -7,12 +7,9 @@
 
 namespace FileUtils
 {
-    HRESULT GetSelectedFile(String& filepath)
+    HRESULT GetSelectedFile(std::vector<String>& selectedFiles)
     {
         HRESULT hr = S_FALSE;
-
-        TCHAR szPath[MAX_PATH];
-        TCHAR szItem[MAX_PATH];
 
         // The window handle the user interacted with
         HWND hwndFind = GetForegroundWindow();
@@ -51,51 +48,52 @@ namespace FileUtils
                                     IFolderView* pfv;
                                     if (SUCCEEDED(psv->QueryInterface(IID_IFolderView, (void**)&pfv)))
                                     {
-                                        IPersistFolder2* ppf2;
-                                        if (SUCCEEDED(pfv->GetFolder(IID_IPersistFolder2, (void**)&ppf2)))
+                                        IFolderView2* pfv2;
+                                        if (SUCCEEDED(psv->QueryInterface(IID_IFolderView2, (void**)&pfv2)))
                                         {
-                                            LPITEMIDLIST pidlFolder;
-                                            if (SUCCEEDED(ppf2->GetCurFolder(&pidlFolder)))
+                                            IPersistFolder2* ppf2;
+                                            if (SUCCEEDED(pfv->GetFolder(IID_IPersistFolder2, (void**)&ppf2)))
                                             {
-                                                if (!SHGetPathFromIDList(pidlFolder, szPath))
+                                                LPITEMIDLIST pidlFolder;
+                                                if (SUCCEEDED(ppf2->GetCurFolder(&pidlFolder)))
                                                 {
-                                                    lstrcpyn(szPath, TEXT("<not a directory>"), MAX_PATH);
-                                                    Logger::info(L"Could not resolve path to a valid directory");
-                                                }
-                                                else
-                                                {
-                                                    int iFocus;
-                                                    if (SUCCEEDED(pfv->GetFocusedItem(&iFocus)))
+                                                    TCHAR szPath[MAX_PATH];
+                                                    if (!SHGetPathFromIDList(pidlFolder, szPath))
                                                     {
-                                                        LPITEMIDLIST pidlItem;
-                                                        if (SUCCEEDED(pfv->Item(iFocus, &pidlItem)))
+                                                        Logger::info(L"Could not resolve path to a valid directory");
+                                                    }
+                                                    else
+                                                    {
+                                                        // loop through all files and get selection state
+                                                        IShellItemArray* psiItems;
+                                                        pfv2->GetSelection(false, &psiItems);
+
+                                                        DWORD selectedCount = 0;
+                                                        psiItems->GetCount(&selectedCount);
+
+                                                        for (DWORD i = 0; i < selectedCount; i++)
                                                         {
-                                                            IShellFolder* psf;
-                                                            if (SUCCEEDED(ppf2->QueryInterface(IID_IShellFolder, (void**)&psf)))
+                                                            IShellItem* shellItem;
+                                                            psiItems->GetItemAt(i, &shellItem);
+
+                                                            LPWSTR itemName;
+                                                            if (SUCCEEDED(shellItem->GetDisplayName(SIGDN_FILESYSPATH, &itemName)))
                                                             {
-                                                                STRRET str;
-                                                                if (SUCCEEDED(psf->GetDisplayNameOf(pidlItem, SHGDN_INFOLDER, &str)))
-                                                                {
-                                                                    StrRetToBuf(&str, pidlItem, szItem, MAX_PATH);
-
-                                                                    filepath.append(szPath);
-                                                                    filepath.append(L"\\");
-                                                                    filepath.append(szItem);
-
-                                                                    Logger::info(L"Selected file: {}", filepath);
-
-                                                                    hr = S_OK;
-                                                                }
-                                                                psf->Release();
+                                                                selectedFiles.push_back(itemName);
                                                             }
-                                                            CoTaskMemFree(pidlItem);
+                                                        }
+
+                                                        if (selectedFiles.size() > 0)
+                                                        {
+                                                            hr = S_OK;
                                                         }
                                                     }
+
+                                                    CoTaskMemFree(pidlFolder);
                                                 }
-                                                
-                                                CoTaskMemFree(pidlFolder);
+                                                ppf2->Release();
                                             }
-                                            ppf2->Release();
+                                            pfv2->Release();
                                         }
                                         pfv->Release();
                                     }

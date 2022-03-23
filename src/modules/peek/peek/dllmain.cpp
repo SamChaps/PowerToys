@@ -173,7 +173,7 @@ private:
         return WaitForSingleObject(m_hProcess, 0) == WAIT_TIMEOUT;
     }
 
-    void launch_viewer(String filepath)
+    void launch_viewer(std::vector<String> selectedFiles)
     {
         Logger::trace(L"Starting PeekViewer process");
 
@@ -183,12 +183,20 @@ private:
         sei.lpFile = L"modules\\Peek\\PeekViewer\\PeekViewer.exe";
         sei.nShow = SW_SHOWNORMAL;
 
-        // Append quotes around file path so that spaces do not parse into different args
-        String quotedPath = L"\"";
-        quotedPath.append(filepath);
-        quotedPath.append(L"\"");
+        String args = L"";
 
-        sei.lpParameters = quotedPath.c_str();
+        for (DWORD i = 0; i < selectedFiles.size(); i++)
+        {
+            // Append quotes around file path so that spaces do not parse into different args
+            String quotedPath = L"\"";
+            quotedPath.append(selectedFiles[i]);
+            quotedPath.append(L"\"");
+
+            args.append(quotedPath);
+            args.append(L" ");
+        }
+
+        sei.lpParameters = args.c_str();
         if (ShellExecuteExW(&sei))
         {
             Logger::trace("Successfully started the PeekViewer process");
@@ -375,12 +383,12 @@ public:
             // TODO: fix VK_SPACE DestroyWindow in viewer app
             if (!is_viewer_running())
             {
-                String filepath;
-                HRESULT result = FileUtils::GetSelectedFile(filepath);
+                std::vector<String> selectedFiles;
+                HRESULT result = FileUtils::GetSelectedFile(selectedFiles);
 
                 if (result == S_OK)
                 {
-                    launch_viewer(filepath);
+                    launch_viewer(selectedFiles);
                 }
             }
 
