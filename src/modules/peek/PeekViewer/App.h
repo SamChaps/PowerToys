@@ -59,7 +59,6 @@ typedef struct
     uintmax_t size; // in bytes
     time_t lastModified;
     bool isFolder;
-    bool isSymlink;
     int fileCount;
 } FileInfo;
 
