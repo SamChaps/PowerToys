@@ -193,18 +193,13 @@ HRESULT App::ParseFileNames()
 
     HRESULT hr = S_OK;
 
-    LPWSTR filenames = szArglist[1];
-    std::wstringstream stream(filenames);
-    std::wstring line;
-
     std::vector<std::wstring> files;
 
-    while (std::getline(stream, line))
+    for (int i = 1; i < nArgs; i++)
     {
-        auto file = line.substr(0, std::wstring::npos);
-        if (std::filesystem::exists(file))
+        if (std::filesystem::exists(szArglist[i]))
         {
-            files.emplace_back(file);
+            files.emplace_back(szArglist[i]);
         }
     }
 
