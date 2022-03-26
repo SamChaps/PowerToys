@@ -168,6 +168,9 @@
     <Compile Include="OOBE\Views\OobeMouseUtils.xaml.cs">
       <DependentUpon>OobeMouseUtils.xaml</DependentUpon>
     </Compile>
+    <Compile Include="OOBE\Views\OobePeek.xaml.cs">
+      <DependentUpon>OobePeek.xaml</DependentUpon>
+    </Compile>
     <Compile Include="OOBE\Views\OobeWhatsNew.xaml.cs">
       <DependentUpon>OobeWhatsNew.xaml</DependentUpon>
     </Compile>
@@ -414,6 +417,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="OOBE\Views\OobeMouseUtils.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="OOBE\Views\OobePeek.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
