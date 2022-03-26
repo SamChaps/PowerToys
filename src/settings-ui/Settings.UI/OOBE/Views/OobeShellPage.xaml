@@ -82,14 +82,6 @@
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
 
-                <muxc:NavigationViewItem x:Uid="Shell_Peek"
-                                        Tag="FileExplorer">
-                    <muxc:NavigationViewItem.Icon>
-                        <BitmapIcon UriSource="ms-appx:///Assets/FluentIcons/FluentIconsPeek.png"
-                                    ShowAsMonochrome="False" />
-                    </muxc:NavigationViewItem.Icon>
-                </muxc:NavigationViewItem>
-
                 <muxc:NavigationViewItem x:Uid="Shell_PowerPreview"
                                         Tag="FileExplorer">
                     <muxc:NavigationViewItem.Icon>
@@ -118,6 +110,14 @@
                                         Tag="MouseUtils">
                     <muxc:NavigationViewItem.Icon>
                         <BitmapIcon UriSource="ms-appx:///Assets/FluentIcons/FluentIconsMouseUtils.png"
+                                    ShowAsMonochrome="False" />
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+
+                <muxc:NavigationViewItem x:Uid="Shell_Peek"
+                                        Tag="Peek">
+                    <muxc:NavigationViewItem.Icon>
+                        <BitmapIcon UriSource="ms-appx:///Assets/FluentIcons/FluentIconsPeek.png"
                                     ShowAsMonochrome="False" />
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
