@@ -10,7 +10,7 @@
     xmlns:toolkitcontrols="using:Microsoft.Toolkit.Uwp.UI.Controls">
 
     <controls:OOBEPageControl x:Uid="Oobe_Peek"
-                              HeroImage="ms-appx:///Assets/Modules/OOBE/Awake.png">
+                              HeroImage="ms-appx:///Assets/Modules/OOBE/Peek.gif">
 
         <controls:OOBEPageControl.PageContent>
             <StackPanel Orientation="Vertical">
