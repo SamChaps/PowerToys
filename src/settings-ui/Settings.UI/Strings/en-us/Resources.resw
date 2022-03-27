@@ -2079,4 +2079,17 @@ From there, simply click on one of the supported files in the File Explorer and 
     <value>Enable Peek</value>
     <comment>Peek is a product name, do not loc</comment>
   </data>
+  <data name="Oobe_Peek.Title" xml:space="preserve">
+    <value>Peek</value>
+    <comment>Do not localize this string</comment>
+  </data>
+  <data name="Oobe_Peek.Description" xml:space="preserve">
+    <value>Peek enables you to preview an item or a group of selected items.</value>
+  </data>
+  <data name="Oobe_Peek_HowToUse.Text" xml:space="preserve">
+    <value>to open Peek.</value>
+  </data>
+  <data name="Oobe_Peek_TipsAndTricks.Text" xml:space="preserve">
+    <value>You can use peek to preview a group of selected items.</value>
+  </data>
 </root>
